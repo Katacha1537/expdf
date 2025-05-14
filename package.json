@@ -17,6 +17,7 @@
     "express": "^5.1.0",
     "multer": "^1.4.5-lts.2",
     "pdf-lib": "^1.17.1",
-    "pdfjs-dist": "^2.14.305"
+    "pdfjs-dist": "^2.14.305",
+    "winston": "^3.17.0"
   }
 }
