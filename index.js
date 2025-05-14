@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const upload = multer({
     dest: '/tmp/uploads/',
-    limits: { fileSize: 50 * 1024 * 1024 },
+    limits: { fileSize: 100 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
         if (file.mimetype === 'application/pdf') {
             cb(null, true);
@@ -171,6 +171,12 @@ app.get('/health', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json({ error: 'Arquivo muito grande. O tamanho máximo é 100 MB.' });
+        }
+        return res.status(400).json({ error: err.message });
+    }
     logger.error('Erro no servidor:', err);
     res.status(500).json({ error: 'Erro interno no servidor.' });
 });
